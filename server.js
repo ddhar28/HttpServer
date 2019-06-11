@@ -1,11 +1,15 @@
 const net = require('net')
+const parseRequest = require('./parseReq.js')
+const createResponse = require('./createRes.js')
 
 const tcpServer = net.createServer((socket) => {
   console.log('connected...')
 
   socket.on('data', (data) => {
-    console.log('received data from client: ' + data)
-    socket.write('received back: ' + data)
+    let message = parseRequest(data.toString()).startLine[1].slice(1)
+    let response = createResponse('HTTP/1.1', 200, 'OK', message)
+    console.log(response)
+    socket.write(response)
   })
 })
 
