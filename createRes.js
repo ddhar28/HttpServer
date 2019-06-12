@@ -27,5 +27,3 @@ module.exports = (protocol, statusCode, statusMessage, body = '') => {
   if (body) response += body
   return response
 }
-
-console.log(setDate())
