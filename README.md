@@ -1,2 +1,2 @@
 # HttpServer
-A simple Http server using Node JS
+A basic Http server using Node JS
