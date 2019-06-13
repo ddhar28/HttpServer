@@ -3,27 +3,35 @@ function setDate () {
   return today.slice(0, today.indexOf('-'))
 }
 
-function setHeader (body) {
+function setHeader () {
   let header = {
     Date: setDate(),
-    'Content-Length': Buffer.byteLength(body),
     'Content-Type': 'text/plain'
   }
-
-  let text = ''
-
-  for (let fieldName in header) {
-    text += fieldName + ': ' + header[fieldName] + '\r\n'
-  }
-  return text
+  return header
 }
 
 function setStatus (protocol, statusCode, statusMessage) {
   return protocol + ' ' + statusCode + ' ' + statusMessage + '\r\n'
 }
 
-module.exports = (protocol, statusCode, statusMessage, body = '') => {
-  let response = setStatus(protocol, statusCode, statusMessage) + setHeader(body) + '\r\n'
-  if (body) response += body
-  return response
+module.exports = (protocol, statusCode, statusMessage) => {
+  const statusLine = setStatus(protocol, statusCode, statusMessage)
+  const header = setHeader()
+
+  function send (body) {
+    header['Content-Length'] = Buffer.byteLength(body)
+    let headerLines = ''
+    for (let fieldName in this.header) {
+      headerLines += fieldName + ': ' + header[fieldName] + '\r\n'
+    }
+
+    return statusLine + headerLines + '\r\n' + body
+  }
+
+  return {
+    statusLine,
+    header,
+    send
+  }
 }
