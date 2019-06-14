@@ -9,12 +9,12 @@ function parseStartLine (req) {
 function parseHeader (req) {
   let header = {}
   let field = []
-  while (req[0] !== '') {
+  while (req.length) {
     field = req[0].split(/:(.+)/)
     header[field[0]] = field[1]
     req = req.slice(1)
   }
-  return [header, req.slice(1)]
+  return header
 }
 
 function parseBody (req, contentLength) {
@@ -28,10 +28,10 @@ function parseBody (req, contentLength) {
 }
 
 module.exports = (request) => {
-  request = parseStartLine(request)
-  const startLine = request[0]
-  request = parseHeader(request[1])
-  let header = request[0]
+  request = request.split('\r\n\r\n')
+  const reqStart = parseStartLine(request[0])
+  const startLine = reqStart[0]
+  const header = parseHeader(reqStart[1])
   const body = parseBody(request[1], header['Content-Length'])
 
   return {

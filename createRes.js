@@ -12,26 +12,27 @@ function setHeader () {
 }
 
 function setStatus (protocol, statusCode, statusMessage) {
-  return protocol + ' ' + statusCode + ' ' + statusMessage + '\r\n'
+  return protocol + ' ' + statusCode + ' ' + statusMessage
 }
 
-module.exports = (protocol, statusCode, statusMessage) => {
+module.exports = (protocol, statusCode, statusMessage, socket) => {
   const statusLine = setStatus(protocol, statusCode, statusMessage)
   const header = setHeader()
 
   function send (body) {
-    header['Content-Length'] = Buffer.byteLength(body)
+    // console.log('body is..', body)
+    header['Content-Length'] = body.length
     let headerLines = ''
     for (let fieldName in this.header) {
       headerLines += fieldName + ': ' + header[fieldName] + '\r\n'
     }
-
-    return statusLine + headerLines + '\r\n' + body
+    socket.write(statusLine + '\r\n' + headerLines + '\r\n' + body)
   }
 
   return {
     statusLine,
     header,
-    send
+    send,
+    socket
   }
 }
