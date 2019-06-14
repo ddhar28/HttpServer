@@ -21,12 +21,13 @@ module.exports = (protocol, statusCode, statusMessage, socket) => {
 
   function send (body) {
     // console.log('body is..', body)
-    header['Content-Length'] = body.length
+    header['Content-Length'] = Buffer.byteLength(body)
     let headerLines = ''
     for (let fieldName in this.header) {
       headerLines += fieldName + ': ' + header[fieldName] + '\r\n'
     }
-    socket.write(statusLine + '\r\n' + headerLines + '\r\n' + body)
+    let message = Buffer.from(statusLine + '\r\n' + headerLines + '\r\n')
+    socket.write(Buffer.concat([message, body]))
   }
 
   return {
