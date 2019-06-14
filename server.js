@@ -5,7 +5,7 @@ const staticHandler = require('./staticHandler.js')
 
 function requestHandler (data, socket) {
   const request = parseRequest(data.toString())
-  const response = createResponse('HTTP/1.1', 200, 'OK', socket)
+  const response = createResponse('HTTP/1.1', socket)
   staticHandler(request, response)
 }
 

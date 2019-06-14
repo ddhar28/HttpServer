@@ -5,8 +5,7 @@ function setDate () {
 
 function setHeader () {
   let header = {
-    Date: setDate(),
-    'Content-Type': 'text/plain'
+    Date: setDate()
   }
   return header
 }
@@ -15,23 +14,24 @@ function setStatus (protocol, statusCode, statusMessage) {
   return protocol + ' ' + statusCode + ' ' + statusMessage
 }
 
-module.exports = (protocol, statusCode, statusMessage, socket) => {
-  const statusLine = setStatus(protocol, statusCode, statusMessage)
+module.exports = (protocol, socket) => {
+  // const statusLine = setStatus(protocol, statusCode, statusMessage)
   const header = setHeader()
 
-  function send (body) {
-    // console.log('body is..', body)
+  function send (body, statusCode, statusMessage) {
+    const statusLine = setStatus(protocol, statusCode, statusMessage)
     header['Content-Length'] = Buffer.byteLength(body)
     let headerLines = ''
     for (let fieldName in this.header) {
       headerLines += fieldName + ': ' + header[fieldName] + '\r\n'
     }
+
+    // console.log(statusLine)
     let message = Buffer.from(statusLine + '\r\n' + headerLines + '\r\n')
     socket.write(Buffer.concat([message, body]))
   }
 
   return {
-    statusLine,
     header,
     send,
     socket
