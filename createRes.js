@@ -15,7 +15,6 @@ function setStatus (protocol, statusCode, statusMessage) {
 }
 
 module.exports = (protocol, socket) => {
-  // const statusLine = setStatus(protocol, statusCode, statusMessage)
   const header = setHeader()
 
   function send (body, statusCode, statusMessage) {
@@ -26,7 +25,6 @@ module.exports = (protocol, socket) => {
       headerLines += fieldName + ': ' + header[fieldName] + '\r\n'
     }
 
-    // console.log(statusLine)
     let message = Buffer.from(statusLine + '\r\n' + headerLines + '\r\n')
     socket.write(Buffer.concat([message, body]))
   }
