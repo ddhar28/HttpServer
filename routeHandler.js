@@ -35,7 +35,11 @@ module.exports = {
       console.log('route not found')
       displayError(res)
     } else {
-      getRoutes[uri](req, res)
+      try {
+        getRoutes[uri](req, res)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

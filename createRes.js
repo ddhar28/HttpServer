@@ -18,6 +18,8 @@ module.exports = (protocol, socket) => {
   const header = setHeader()
 
   function send (body, statusCode = 200, statusMessage = 'OK') {
+    if (typeof body === 'string') body = Buffer.from(body)
+
     const statusLine = setStatus(protocol, statusCode, statusMessage)
     header['Content-Length'] = Buffer.byteLength(body)
     let headerLines = ''

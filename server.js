@@ -19,7 +19,10 @@ const tcpServer = net.createServer((socket) => {
 })
 
 // routes
-route.get('/sayHello', (req, res) => { res.send('Hello') })
+route.get('/sayHello', (req, res) => {
+  // res.header['Content-Type'] = 'text/plain'
+  res.send('Hello')
+})
 
 tcpServer.listen(5433, () => {
   console.log('server listening on port 5433')
