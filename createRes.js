@@ -17,7 +17,7 @@ function setStatus (protocol, statusCode, statusMessage) {
 module.exports = (protocol, socket) => {
   const header = setHeader()
 
-  function send (body, statusCode, statusMessage) {
+  function send (body, statusCode = 200, statusMessage = 'OK') {
     const statusLine = setStatus(protocol, statusCode, statusMessage)
     header['Content-Length'] = Buffer.byteLength(body)
     let headerLines = ''
