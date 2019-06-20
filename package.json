@@ -1,0 +1,23 @@
+{
+  "name": "httpserver",
+  "version": "1.0.0",
+  "description": "Basic http server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddhar28/HttpServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddhar28/HttpServer/issues"
+  },
+  "homepage": "https://github.com/ddhar28/HttpServer#readme",
+  "dependencies": {
+    "mime": "^2.4.4"
+  }
+}

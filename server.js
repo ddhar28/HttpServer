@@ -1,14 +1,13 @@
 const net = require('net')
 const parseRequest = require('./parseReq.js')
 const createResponse = require('./createRes.js')
-const route = require('./routeHandler')
-let req
-let res
+const route = require('./handlers/routeHandler')
+const fetchResult = require('./handlers/requestHandler')
 
 function requestHandler (data, socket) {
-  req = parseRequest(data.toString())
-  res = createResponse('HTTP/1.1', socket)
-  route.execute(req, res)
+  const req = parseRequest(data.toString())
+  const res = createResponse('HTTP/1.1', socket)
+  fetchResult(req, res)
 }
 
 const tcpServer = net.createServer((socket) => {
@@ -20,8 +19,11 @@ const tcpServer = net.createServer((socket) => {
 
 // routes
 route.get('/sayHello', (req, res) => {
-  // res.header['Content-Type'] = 'text/plain'
   res.send('Hello')
+})
+
+route.get('/test', (req, res) => {
+  res.send('test')
 })
 
 tcpServer.listen(5433, () => {
